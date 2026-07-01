@@ -1,0 +1,28 @@
+naming convensions:
+
+01-initialisation_criteria//(preprocessed data): it is a csv file holding the collected data in a structured numeric form.
+01-initialisation_criteria//startsit: it is a csv with eace row representing a new layer and the number in that row shows number of nodes in the layer, the first row is the input layer and the last is the output layer.
+
+02-Training_Data//tts_train_x: "tts" means "train-test-split" model was used, "train" means this is training data, "x" (0<x<1) represents the fraction of the data went into training
+
+03-Testing_Data//tts_test_y: "tts" means "train-test-split" model was used, "test" means this is testting data, "y" (0<y<1) represents the fraction of the data went into testing
+
+processing//Bias_Pools//B_x: its a csv containing bias values of the "x_th" layer (shaped like the layer itself)
+processing//Layers//Layer_y: its a csv containg the value of each node after calculation for the next layer to reference
+processing//Weight_History//whist_x-to-(x+1): its a csv containing the time sequenced weights of all connections between the "xth" and the "(x+1)th" layer
+processing//Weight_Pools//W_x-to-(x+1): its a csv containing the current values of all connections between "xth" to "(x+1)th" layer
+processing//coordination_factor.csv: contains the epoch number to sync all systems
+processing//rms_errors: has "epoch-rms_errors" pairs
+
+BasicNN_v1.py:
+___it is a custom library containing all elements of a feed forward neural network which can be
+___called upon by other systems for the construction of such neural network architectures. It hosts
+___the processing of all calculations done within the neural network.
+
+Data_sampling_TrainTestSplit.py:
+___it is a simple tts(train test split) algorithm made to handle the distribution of collected data
+___to training data and testing data. its output looks like "tts_test_x.csv" for testing data and
+___"tts_train_(1-x).csv" where 0 <= x <= 1 (x represents the fraction of data used for testing).
+
+Gradient_Descent.py:
+___

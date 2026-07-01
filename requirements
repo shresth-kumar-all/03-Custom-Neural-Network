@@ -1,0 +1,8 @@
+make a foled named "processing" and have subfolders "Bias_Pools", Weight_Pools", "Layers", "Weight_History"
+
+ini(_startsit)
+    "01-initialization_criteria\\startsit.csv" --> ini(_startsit)
+
+learner(_startsit,_traindata)
+    "01-initialization_criteria\\startsit.csv" --> learner(_startsit)
+    "02-Training_Data\\tts_train_0.8.csv" -------> learner(_traindata)
