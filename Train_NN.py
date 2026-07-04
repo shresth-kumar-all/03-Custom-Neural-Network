@@ -1,6 +1,7 @@
 import BasicNN_v1 as nn
 import Gradient_Descent_v1 as gd
 import pandas as pd
+import initiator_v1 as ini
 
 startsit="01-initialization_criteria\\startsit.csv"
 tts_train="02-Training_Data\\tts_train_0.8.csv"
@@ -12,6 +13,8 @@ TrD_shape=TrainD_dt.shape
 layers_import=pd.read_csv(startsit)
 layers_dt=pd.DataFrame(layers_import)
 layers=layers_dt["layer_widths"].tolist()
+
+ini.ini(startsit)
 
 uin_epoch=int(input("Number of epoch: "))
 epoch=0

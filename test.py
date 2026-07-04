@@ -45,6 +45,5 @@ print(b)
 '''
 #########################################################################################################
 
-specs=pd.read_csv("01-initialization_criteria\\startsit.csv")
-specs_df=pd.DataFrame(specs)
-print(specs_df.shape[0])
+e_df=pd.DataFrame({"e_rms":[1,2,3,4]})
+e_df.to_csv("processing\\rms_errors.csv",index=False)

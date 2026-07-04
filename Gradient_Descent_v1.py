@@ -74,17 +74,17 @@ def learner(_startsit,_traindata):
             return func
 
     if len(errors_list) < 2:
-        for cl in range(0,num_layers-1):
-            weights=pd.read_csv(f"processing\\Weight_Pools\\W_{cl}-to-{cl+1}.csv")
+        for c1 in range(0,num_layers-1):
+            weights=pd.read_csv(f"processing\\Weight_Pools\\W_{c1}-to-{c1+1}.csv")
             weights_df=pd.DataFrame(weights)
             shape=weights.shape
-            weights_h=pd.read_csv(f"processing\\Weight_Pools\\Whist_{cl}-to-{cl+1}.csv")
+            weights_h=pd.read_csv(f"processing\\Weight_History\\Whist_{c1}-to-{c1+1}.csv")
             weights_h_df=pd.DataFrame(weights_h)
-            weights_hn=pd.read_csv(f"processing\\Weight_Pools\\Whist_{cl}-to-{cl+1}.csv")
+            weights_hn=pd.read_csv(f"processing\\Weight_History\\Whist_{c1}-to-{c1+1}.csv")
             weights_hn_df=pd.DataFrame(weights_hn)
 
             weights_df_up=weights_df+1
-            weights_df_up.to_csv(f"processing\\Weight_Pools\\W_{cl}-to-{cl+1}.csv",index=False)
+            weights_df_up.to_csv(f"processing\\Weight_Pools\\W_{c1}-to-{c1+1}.csv",index=False)
 
             for a in range(0,shape[0]):
                 wr=weights_df_up.iloc[a].tolist()
@@ -94,7 +94,7 @@ def learner(_startsit,_traindata):
                     wr_ab=wr[b]
                     whr_ab=whr[b]
 
-                    whr_y=whr_ab
+                    whr_y=list(whr_ab)
                     whr_y.pop(0)
                     whr_y.pop(-1)
                     whr_y.append("#")
@@ -103,17 +103,17 @@ def learner(_startsit,_traindata):
                     for c1 in range(0,len(whr_y)):
                         if whr_y[c1] in {',','#'}:
                             s1="".join(mem)
-                            a.append(float(s1))
+                            whr_a.append(float(s1))
                             mem=[]
 
                         else:
-                            mem.append(whr_y[c])
+                            mem.append(whr_y[c1])
                     whr_next=whr_a.append(wr_ab)
                     whr[b]=f"{whr_next}"
                 
                 weights_hn_df.iloc[a]=whr
             
-            weights_hn_df.to_csv(f"processing\\Weight_Pools\\Whist_{cl}-to-{cl+1}.csv",index=False)
+            weights_hn_df.to_csv(f"processing\\Weight_Pools\\Whist_{c1}-to-{c1+1}.csv",index=False)
 
     else:
         for cl in range(0,num_layers-1):
@@ -138,7 +138,7 @@ def learner(_startsit,_traindata):
                     #wfr_ab=wfr[bf]
                     wfhr_ab=wfhr[bf]
 
-                    wfhr_y=wfhr_ab
+                    wfhr_y=list(wfhr_ab)
                     wfhr_y.pop(0)
                     wfhr_y.pop(-1)
                     wfhr_y.append("#")
@@ -153,8 +153,8 @@ def learner(_startsit,_traindata):
                             memf=[]
 
                         else:
-                            memf.append(wfhr_a[c])
-                            memf.append(wfhr_a_backup[c])
+                            memf.append(wfhr_a[c1f])
+                            memf.append(wfhr_a_backup[c1f])
                     
                     e_link_w=dict(zip(wfhr_a,ef))
                     wx=wfhr_a[-1]
