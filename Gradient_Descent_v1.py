@@ -113,14 +113,14 @@ def learner(_startsit,_traindata):
                 
                 weights_hn_df.iloc[a]=whr
             
-            weights_hn_df.to_csv(f"processing\\Weight_Pools\\Whist_{c1}-to-{c1+1}.csv",index=False)
+            weights_hn_df.to_csv(f"processing\\Weight_History\\Whist_{c1}-to-{c1+1}.csv",index=False)
 
     else:
-        for cl in range(0,num_layers-1):
-            weightsf=pd.read_csv(f"processing\\Weight_Pools\\W_{cl}-to-{cl+1}.csv")
+        for c2 in range(0,num_layers-1):
+            weightsf=pd.read_csv(f"processing\\Weight_Pools\\W_{c2}-to-{c2+1}.csv")
             weightsf_df=pd.DataFrame(weightsf)
             shape=weightsf.shape
-            weightsf_h=pd.read_csv(f"processing\\Weight_History\\Whist_{cl}-to-{cl+1}.csv")
+            weightsf_h=pd.read_csv(f"processing\\Weight_History\\Whist_{c2}-to-{c2+1}.csv")
             weightsf_h_df=pd.DataFrame(weightsf_h)
             ef_csv=pd.read_csv("processing\\rms_errors.csv")
             ef_df=pd.DataFrame(ef_csv)
@@ -142,20 +142,20 @@ def learner(_startsit,_traindata):
                     wfhr_y.pop(0)
                     wfhr_y.pop(-1)
                     wfhr_y.append("#")
-                    
+
                     wfhr_a=[]
                     wfhr_a_backup=[] #download mechanism for weight history lists
                     memf=[]
                     for c1f in range(0,len(wfhr_y)):
                         if wfhr_y[c1f] in {',','#'}:
                             s1f="".join(memf)
-                            af.append(float(s1f))
+                            wfhr_a.append(float(s1f))
+                            wfhr_a_backup.append(float(s1f))
                             memf=[]
 
                         else:
-                            memf.append(wfhr_a[c1f])
-                            memf.append(wfhr_a_backup[c1f])
-                    
+                            memf.append(wfhr_y[c1f])
+
                     e_link_w=dict(zip(wfhr_a,ef))
                     wx=wfhr_a[-1]
                     wfhr_a.sort() #making the x axis of the graph
@@ -208,7 +208,7 @@ def learner(_startsit,_traindata):
                 weightsf_df.iloc[af]=wfr_updated #sending updated weights back to DataFrames
                 weightsf_h_df.iloc[af]=wfhr_updated
             
-            weightsf_df.to_csv(f"processing\\Weight_Pools\\W_{cl}-to-{cl+1}.csv",index=False) #sending weights and history back to processing(globally accessible folder)
-            weightsf_h_df.to_csv(f"processing\\Weight_Pools\\Whist_{cl}-to-{cl+1}.csv",index=False)
+            weightsf_df.to_csv(f"processing\\Weight_Pools\\W_{c2}-to-{c2+1}.csv",index=False) #sending weights and history back to processing(globally accessible folder)
+            weightsf_h_df.to_csv(f"processing\\Weight_History\\Whist_{c2}-to-{c2+1}.csv",index=False)
 
 ##########################################################################################################
