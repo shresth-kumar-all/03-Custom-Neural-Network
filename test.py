@@ -1,51 +1,38 @@
 import pandas as pd
 import numpy as np
-'''
-x=pd.read_csv("list_test.csv")
-y=list(x["0"].to_list()[0])
-#print(y)
 
-################################################
-
-#download:
-a=[]
-a_backup=[]
-mem=[]
-for c in range(0,len(y)):
-    if y[c] in {',','#'}:
-        s1="".join(mem)
-        a.append(float(s1))
-        a_backup.append(float(s1))
-        mem=[]
-
+def fom(m_):
+    a_=20 #learning rate: higher the value, slower it learns but better accuracy probably idk
+    if m_ == 0:
+        return 0
     else:
-        mem.append(y[c])
+        func=(np.absolute(m_)/m_)*((np.log10(np.absolute(m_) + 1))/np.log10(a_)) #func is susceptible to 0/0 nan errors but numpy doesnt generate those errors
+        return func
 
-#print(a)
+weight_hist=pd.read_csv("processing\\Weight_History\\Whist_0-to-1.csv")
+weight_hist_specs=weight_hist.shape
 
-################################################
+for c0_1 in range(0,weight_hist_specs[0]):
+    curr_set=weight_hist.iloc[c0_1].tolist()
 
-#say after processing we add -0.98 to the list:
-a.append(-0.98)
-a_backup.append(-0.98)
-#print(a)
+    for c0_1_1 in range(0,len(curr_set)):
+        x=curr_set[c0_1_1]
+        #download
+        y=list(x)
+        y.pop(0)
+        y.pop(-1)
+        y.append("#")
+        a=[]
+        mem=[]
+        for c in range(0,len(y)):
+            if y[c] in {',','#'}:
+                s1="".join(mem)
+                a.append(float(s1))
+                mem=[]
 
-#upload:
-up_0=list(f"{a}")
-remove=['[',']']
-for c in range(0,len(remove)):
-    up_0.remove(remove[c])
-up_0.append("#")
+            else:
+                mem.append(y[c])
+                
 
-for c in range(0,up_0.count(" ")):
-    up_0.remove(" ")
-
-b="".join(up_0)
-print(b)
-'''
-#########################################################################################################
-
-a=[1,2,3,4]
-in_layer=pd.DataFrame()
-in_layer["0"]=a
-print(in_layer["0"].tolist())
+        
+print(weight_hist)

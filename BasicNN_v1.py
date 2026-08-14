@@ -35,8 +35,8 @@ def layer(layer_num): #layer_num is an integer         #start processing on firs
         now_layer_df.iloc[pos]=float(echo)
         
 
-    for c0 in range(0,now_layer_df.shape[0]):
-        node(c0)
+    for c1 in range(0,now_layer_df.shape[0]):
+        node(c1)
 
     now_layer_df.to_csv(f"processing\\Layers\\Layer_{layer_num}.csv",index=False)
     
@@ -49,4 +49,12 @@ def output_layer():
     
     out=pd.read_csv(f"processing\\Layers\\Layer_{last}.csv")
     out_df=pd.DataFrame(out)
+    out_list=out_df["0"].tolist()
+    ans=[-10]
+    for c2 in range(0,len(out_list)):
+        if out_list[c2] >= ans[-1]:
+            ans[-1]=c2
+        else:
+            pass
     print(out_df)
+    print("ans: ",ans)
