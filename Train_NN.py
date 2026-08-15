@@ -1,5 +1,5 @@
 import BasicNN_v1 as nn
-import Gradient_Descent_v1 as gd
+import Gradient_Descent_Remake as gd
 import pandas as pd
 
 startsit="01-initialization_criteria\\startsit.csv"

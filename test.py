@@ -9,6 +9,7 @@ def fom(m_):
         func=(np.absolute(m_)/m_)*((np.log10(np.absolute(m_) + 1))/np.log10(a_)) #func is susceptible to 0/0 nan errors but numpy doesnt generate those errors
         return func
 
+'''
 weight_hist=pd.read_csv("processing\\Weight_History\\Whist_0-to-1.csv")
 weight_hist_specs=weight_hist.shape
 
@@ -32,7 +33,7 @@ for c0_1 in range(0,weight_hist_specs[0]):
 
             else:
                 mem.append(y[c])
-                
 
-        
+                
 print(weight_hist)
+'''

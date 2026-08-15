@@ -70,6 +70,8 @@ def fom(m_):
         func=(np.absolute(m_)/m_)*((np.log10(np.absolute(m_) + 1))/np.log10(a_)) #func is susceptible to 0/0 nan errors but numpy doesnt generate those errors
         return func
 
+##########################################################################################################
+
 if len(errors_list) < 2:
     for c0 in range(1,num_layers):
         weights=pd.read_csv(f"processing\\Weight_Pools\\W_{c0-1}-to-{c0}.csv")
@@ -110,3 +112,84 @@ if len(errors_list) < 2:
         weight_hist.to_csv(f"processing\\Weight_History\\Whist_{c0-1}-to-{c0}.csv",index=False)
 
 ##########################################################################################################
+else:
+    for c1 in range(0,num_layers):
+        weights=pd.read_csv(f"processing\\Weight_Pools\\W_{c1-1}-to-{c1}.csv")
+        weight_hist=pd.read_csv(f"processing\\Weight_History\\Whist_{c1-1}-to-{c1}.csv")
+        e_list=pd.read_csv("processing\\rms_errors.csv")
+        weight_hist_specs=weight_hist.shape
+
+        for c1_1 in range(0,weight_hist_specs[0]):
+            curr_set=weight_hist.iloc[c1_1].tolist()
+            curr_update=weights.iloc[c1_1].tolist()
+
+            for c1_1_1 in range(0,len(curr_set)):
+                w0=curr_update[c1_1_1]
+
+                x=curr_set[c1_1_1]
+                #download
+                y=list(x)
+                y.pop(0)
+                y.pop(-1)
+                y.append("#")
+                a=[]
+                a_backup=[] #downloaded list
+                mem=[]
+                for c in range(0,len(y)):
+                    if y[c] in {',','#'}:
+                        s1="".join(mem)
+                        a.append(float(s1))
+                        a_backup.append(float(s1))
+                        mem=[]
+
+                    else:
+                        mem.append(y[c])
+
+                xy_link=dict(zip(a,e_list))
+                a.sort()
+                pos=a.index(w0)
+
+                #finding slope:
+                if pos==0:
+                    x_0=a[0]
+                    x_plus=a[1]
+                    y_0=xy_link[x_0]
+                    y_plus=xy_link[x_plus]
+
+                    slope=(y_plus-y_0)/(x_plus-x_0)
+
+                elif pos==len(a)-1:
+                    x_0=a[len(a)-1]
+                    x_minus=a[len(a)-2]
+                    y_0=xy_link[x_0]
+                    y_minus=xy_link[x_plus]
+
+                    slope=(y_minus-y_0)/(x_minus-x_0)                    
+
+                else:
+                    x_0=a[pos]
+                    x_plus=a[pos+1]
+                    x_minus=a[a-1]
+                    y_0=xy_link[x_0]
+                    y_plus=xy_link[x_plus]
+                    y_minus=xy_link[x_minus]
+
+                    slope_plus=(y_plus-y_0)/(x_plus-x_0)
+                    slope_minus=(y_minus-y_0)/(x_minus-x_0)
+
+                    if abs(slope_plus)>abs(slope_minus):
+                        slope=slope_plus
+                    else:
+                        slope=slope_minus
+
+                offset=fom(slope)
+                wi=w0-fom(slope)
+                curr_update=wi
+                a_backup.append(wi)
+                curr_set=a_backup
+
+            weights.iloc[c1_1]=curr_update
+            weight_hist.iloc[c1_1]=curr_set
+
+        weights.to_csv(f"processing\\Weight_Pools\\W_{c1-1}-to-{c1}.csv",index=False)
+        weight_hist.to_csv(f"processing\\Weight_History\\Whist_{c1-1}-to-{c1}.csv",index=False)
