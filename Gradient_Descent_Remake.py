@@ -72,7 +72,7 @@ def fom(m_):
 
 ##########################################################################################################
 
-if len(errors_list) < 2:
+if len(errors_list) <= 2:
     for c0 in range(1,num_layers):
         weights=pd.read_csv(f"processing\\Weight_Pools\\W_{c0-1}-to-{c0}.csv")
         weight_hist=pd.read_csv(f"processing\\Weight_History\\Whist_{c0-1}-to-{c0}.csv")
@@ -80,6 +80,7 @@ if len(errors_list) < 2:
         weight_hist_specs=weight_hist.shape
 
         weights+=1
+        weights=round(weights,2)
 
         for c0_1 in range(0,weight_hist_specs[0]):
             curr_set=weight_hist.iloc[c0_1].tolist()
@@ -113,15 +114,17 @@ if len(errors_list) < 2:
 
 ##########################################################################################################
 else:
-    for c1 in range(0,num_layers):
+    for c1 in range(1,num_layers):
         weights=pd.read_csv(f"processing\\Weight_Pools\\W_{c1-1}-to-{c1}.csv")
         weight_hist=pd.read_csv(f"processing\\Weight_History\\Whist_{c1-1}-to-{c1}.csv")
-        e_list=pd.read_csv("processing\\rms_errors.csv")
+        e_l=pd.read_csv("processing\\rms_errors.csv")
+        e_list=e_l["e_rms"].tolist()
         weight_hist_specs=weight_hist.shape
 
         for c1_1 in range(0,weight_hist_specs[0]):
             curr_set=weight_hist.iloc[c1_1].tolist()
             curr_update=weights.iloc[c1_1].tolist()
+            print(len(curr_update))
 
             for c1_1_1 in range(0,len(curr_set)):
                 w0=curr_update[c1_1_1]
@@ -162,7 +165,7 @@ else:
                     x_0=a[len(a)-1]
                     x_minus=a[len(a)-2]
                     y_0=xy_link[x_0]
-                    y_minus=xy_link[x_plus]
+                    y_minus=xy_link[x_minus]
 
                     slope=(y_minus-y_0)/(x_minus-x_0)                    
 
@@ -184,12 +187,16 @@ else:
 
                 offset=fom(slope)
                 wi=w0-fom(slope)
-                curr_update=wi
+                weight_update=wi
                 a_backup.append(wi)
                 curr_set=a_backup
 
-            weights.iloc[c1_1]=curr_update
+            weights.iloc[c1_1]=weight_update
             weight_hist.iloc[c1_1]=curr_set
 
         weights.to_csv(f"processing\\Weight_Pools\\W_{c1-1}-to-{c1}.csv",index=False)
         weight_hist.to_csv(f"processing\\Weight_History\\Whist_{c1-1}-to-{c1}.csv",index=False)
+
+cf+=1
+cf_df=pd.DataFrame({"cf":[cf]})
+cf_df.to_csv("processing\\coordination_factor.csv",index=False)
