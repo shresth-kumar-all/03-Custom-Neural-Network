@@ -124,7 +124,6 @@ else:
         for c1_1 in range(0,weight_hist_specs[0]):
             curr_set=weight_hist.iloc[c1_1].tolist()
             curr_update=weights.iloc[c1_1].tolist()
-            print(len(curr_update))
 
             for c1_1_1 in range(0,len(curr_set)):
                 w0=curr_update[c1_1_1]
@@ -172,13 +171,17 @@ else:
                 else:
                     x_0=a[pos]
                     x_plus=a[pos+1]
-                    x_minus=a[a-1]
+                    x_minus=a[pos-1]
                     y_0=xy_link[x_0]
                     y_plus=xy_link[x_plus]
                     y_minus=xy_link[x_minus]
 
-                    slope_plus=(y_plus-y_0)/(x_plus-x_0)
-                    slope_minus=(y_minus-y_0)/(x_minus-x_0)
+                    try:
+                        slope_plus=(y_plus-y_0)/(x_plus-x_0)
+                        slope_minus=(y_minus-y_0)/(x_minus-x_0)
+                    except ZeroDivisionError:
+                        slope_plus=0
+                        slope_minus=0
 
                     if abs(slope_plus)>abs(slope_minus):
                         slope=slope_plus
@@ -189,10 +192,10 @@ else:
                 wi=w0-fom(slope)
                 weight_update=wi
                 a_backup.append(wi)
-                curr_set=a_backup
+                curr_set_send=a_backup
 
             weights.iloc[c1_1]=weight_update
-            weight_hist.iloc[c1_1]=curr_set
+            weight_hist.iloc[c1_1]=f"{curr_set_send}"
 
         weights.to_csv(f"processing\\Weight_Pools\\W_{c1-1}-to-{c1}.csv",index=False)
         weight_hist.to_csv(f"processing\\Weight_History\\Whist_{c1-1}-to-{c1}.csv",index=False)
