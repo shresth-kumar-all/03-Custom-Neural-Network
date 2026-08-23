@@ -17,7 +17,7 @@ for c1 in range(0,TrD_shape[0]):
 
     in_=TrainD_dt.iloc[c1].tolist()
     in_dt=pd.DataFrame(in_)
-    in_dt_tosend=in_dt.to_csv("processing\\in_layer.csv",index=False)
+    in_dt.to_csv("processing\\in_layer.csv",index=False)
 
     nn.input_layer("processing\\in_layer.csv")
     for c2 in range(1,len(layers)):

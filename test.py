@@ -37,8 +37,6 @@ for c0_1 in range(0,weight_hist_specs[0]):
                 
 print(weight_hist)
 '''
-a=[1,2,3,4]
-b=[1.1,2.2,3.3,4.4]
-
-c=dict(zip(b,a))
-print(c[1.1])
+a="0.123"
+b="0.1234567890808480843058345"
+print(float(a),float(b))

@@ -57,4 +57,3 @@ def output_layer():
         else:
             pass
     print(out_df)
-    print("ans: ",ans)
